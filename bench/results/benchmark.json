@@ -1,0 +1,1320 @@
+{
+  "tool": "held",
+  "version": "0.1.0",
+  "generator": "splitmix64",
+  "alpha": 0.05,
+  "power": 0.8,
+  "cross_check": {
+    "rounds": 201,
+    "mismatches": 0,
+    "proven": 24,
+    "conflicting": 155,
+    "not_proven": 22
+  },
+  "scenarios": [
+    {
+      "name": "null",
+      "true_delta": 0,
+      "rounds": 2000,
+      "configurations": [
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 1,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.00309375,
+          "mean_heldout_gain": -0.0003029999999999998,
+          "observed_overstatement": 0.00309375,
+          "predicted_inflation": 0,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.4325,
+              "false_accept_rate": 0.4325
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.0415,
+              "false_accept_rate": 0.0415
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.0295,
+              "false_accept_rate": 0.0295
+            }
+          ]
+        },
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 1,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.00325,
+          "mean_heldout_gain": -0.000015000000000000083,
+          "observed_overstatement": 0.00325,
+          "predicted_inflation": 0,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.4385,
+              "false_accept_rate": 0.4385
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.0155,
+              "false_accept_rate": 0.0155
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0
+            }
+          ]
+        },
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 4,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.12484375,
+          "mean_heldout_gain": -0.0005949999999999999,
+          "observed_overstatement": 0.12484375,
+          "predicted_inflation": 0.17021965884198653,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.738,
+              "false_accept_rate": 0.738
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.119,
+              "false_accept_rate": 0.119
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.0195,
+              "false_accept_rate": 0.0195
+            }
+          ]
+        },
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 4,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.1226875,
+          "mean_heldout_gain": -0.0003735000000000001,
+          "observed_overstatement": 0.1226875,
+          "predicted_inflation": 0.17007768280766924,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.741,
+              "false_accept_rate": 0.741
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.0625,
+              "false_accept_rate": 0.0625
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0
+            }
+          ]
+        },
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 16,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.2056875,
+          "mean_heldout_gain": 0.0007780000000000004,
+          "observed_overstatement": 0.2056875,
+          "predicted_inflation": 0.28101493884718376,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.899,
+              "false_accept_rate": 0.899
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.239,
+              "false_accept_rate": 0.239
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.023,
+              "false_accept_rate": 0.023
+            }
+          ]
+        },
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 16,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.20203125,
+          "mean_heldout_gain": 0.0002319999999999999,
+          "observed_overstatement": 0.20203125,
+          "predicted_inflation": 0.2806960134367539,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.9045,
+              "false_accept_rate": 0.9045
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.1345,
+              "false_accept_rate": 0.1345
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0
+            }
+          ]
+        },
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 64,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.26684375,
+          "mean_heldout_gain": -0.0007479999999999996,
+          "observed_overstatement": 0.26684375,
+          "predicted_inflation": 0.3609174064708297,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.9645,
+              "false_accept_rate": 0.9645
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.4025,
+              "false_accept_rate": 0.4025
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.022,
+              "false_accept_rate": 0.022
+            }
+          ]
+        },
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 64,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.2655,
+          "mean_heldout_gain": -0.00015149999999999997,
+          "observed_overstatement": 0.2655,
+          "predicted_inflation": 0.3619618184668667,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.975,
+              "false_accept_rate": 0.975
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.2665,
+              "false_accept_rate": 0.2665
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 1,
+          "min_gain": 0,
+          "mean_claimed_gain": -0.000203125,
+          "mean_heldout_gain": 0.0007789999999999992,
+          "observed_overstatement": -0.000203125,
+          "predicted_inflation": 0,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.469,
+              "false_accept_rate": 0.469
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.0195,
+              "false_accept_rate": 0.0195
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.0355,
+              "false_accept_rate": 0.0355
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 1,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.001234375,
+          "mean_heldout_gain": -0.00025799999999999966,
+          "observed_overstatement": 0.001234375,
+          "predicted_inflation": 0,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.2555,
+              "false_accept_rate": 0.2555
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.0045,
+              "false_accept_rate": 0.0045
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 4,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.060921875,
+          "mean_heldout_gain": 0.0002089999999999994,
+          "observed_overstatement": 0.060921875,
+          "predicted_inflation": 0.0869598852654392,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.7705,
+              "false_accept_rate": 0.7705
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.083,
+              "false_accept_rate": 0.083
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.0255,
+              "false_accept_rate": 0.0255
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 4,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.05546875,
+          "mean_heldout_gain": 0.00008600000000000002,
+          "observed_overstatement": 0.05546875,
+          "predicted_inflation": 0.08647865373324369,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.5,
+              "false_accept_rate": 0.5
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.015,
+              "false_accept_rate": 0.015
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 16,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.1050546875,
+          "mean_heldout_gain": -0.0005549999999999994,
+          "observed_overstatement": 0.1050546875,
+          "predicted_inflation": 0.14528433023648782,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.928,
+              "false_accept_rate": 0.928
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.2025,
+              "false_accept_rate": 0.2025
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.021,
+              "false_accept_rate": 0.021
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 16,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.103171875,
+          "mean_heldout_gain": -0.00035099999999999986,
+          "observed_overstatement": 0.103171875,
+          "predicted_inflation": 0.14555256883596393,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.7735,
+              "false_accept_rate": 0.7735
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.061,
+              "false_accept_rate": 0.061
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 64,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.13325,
+          "mean_heldout_gain": 0.0002650000000000005,
+          "observed_overstatement": 0.13325,
+          "predicted_inflation": 0.19081275356868146,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.977,
+              "false_accept_rate": 0.977
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.327,
+              "false_accept_rate": 0.327
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.027,
+              "false_accept_rate": 0.027
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 64,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.1361171875,
+          "mean_heldout_gain": -0.0000034999999999996404,
+          "observed_overstatement": 0.1361171875,
+          "predicted_inflation": 0.19081758245887814,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.9,
+              "false_accept_rate": 0.9
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.141,
+              "false_accept_rate": 0.141
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 1,
+          "min_gain": 0,
+          "mean_claimed_gain": -0.000783203125,
+          "mean_heldout_gain": 0.00017799999999999988,
+          "observed_overstatement": -0.000783203125,
+          "predicted_inflation": 0,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.472,
+              "false_accept_rate": 0.472
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.023,
+              "false_accept_rate": 0.023
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.024,
+              "false_accept_rate": 0.024
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 1,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.0005234375,
+          "mean_heldout_gain": 0.0001699999999999996,
+          "observed_overstatement": 0.0005234375,
+          "predicted_inflation": 0,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.118,
+              "false_accept_rate": 0.118
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.001,
+              "false_accept_rate": 0.001
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 4,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.03115625,
+          "mean_heldout_gain": -0.0005690000000000001,
+          "observed_overstatement": 0.03115625,
+          "predicted_inflation": 0.043378675907146336,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.7915,
+              "false_accept_rate": 0.7915
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.0865,
+              "false_accept_rate": 0.0865
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.022,
+              "false_accept_rate": 0.022
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 4,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.03026171875,
+          "mean_heldout_gain": -0.000345,
+          "observed_overstatement": 0.03026171875,
+          "predicted_inflation": 0.04347652920095057,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.301,
+              "false_accept_rate": 0.301
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.0015,
+              "false_accept_rate": 0.0015
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 16,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.05192578125,
+          "mean_heldout_gain": 0.0008229999999999989,
+          "observed_overstatement": 0.05192578125,
+          "predicted_inflation": 0.07324379375054083,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.9305,
+              "false_accept_rate": 0.9305
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.189,
+              "false_accept_rate": 0.189
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.028,
+              "false_accept_rate": 0.028
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 16,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.050861328125,
+          "mean_heldout_gain": -0.0009285000000000015,
+          "observed_overstatement": 0.050861328125,
+          "predicted_inflation": 0.0731674685420831,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.5265,
+              "false_accept_rate": 0.5265
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.01,
+              "false_accept_rate": 0.01
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 64,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.067712890625,
+          "mean_heldout_gain": 0.0000814999999999999,
+          "observed_overstatement": 0.067712890625,
+          "predicted_inflation": 0.09646215465627259,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.9805,
+              "false_accept_rate": 0.9805
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.332,
+              "false_accept_rate": 0.332
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.0265,
+              "false_accept_rate": 0.0265
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 64,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.068451171875,
+          "mean_heldout_gain": 0.0005074999999999998,
+          "observed_overstatement": 0.068451171875,
+          "predicted_inflation": 0.09639457699699576,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.7365,
+              "false_accept_rate": 0.7365
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.0295,
+              "false_accept_rate": 0.0295
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "alternative",
+      "true_delta": 0.05,
+      "rounds": 2000,
+      "configurations": [
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 1,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.047125,
+          "mean_heldout_gain": 0.050230500000000226,
+          "observed_overstatement": -0.0028750000000000026,
+          "predicted_inflation": 0,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.531,
+              "false_reject_rate": 0.469
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.07,
+              "false_reject_rate": 0.9299999999999999
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.6765,
+              "false_reject_rate": 0.3235
+            }
+          ]
+        },
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 1,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.05403125,
+          "mean_heldout_gain": 0.05004850000000011,
+          "observed_overstatement": 0.00403125,
+          "predicted_inflation": 0,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.5495,
+              "false_reject_rate": 0.4505
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.042,
+              "false_reject_rate": 0.958
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.019,
+              "false_reject_rate": 0.981
+            }
+          ]
+        },
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 4,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.16925,
+          "mean_heldout_gain": 0.05017650000000028,
+          "observed_overstatement": 0.11925000000000001,
+          "predicted_inflation": 0.16801903515533312,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.841,
+              "false_reject_rate": 0.15900000000000003
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.1865,
+              "false_reject_rate": 0.8135
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.666,
+              "false_reject_rate": 0.33399999999999996
+            }
+          ]
+        },
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 4,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.16534375,
+          "mean_heldout_gain": 0.05014500000000007,
+          "observed_overstatement": 0.11534375000000001,
+          "predicted_inflation": 0.16860801372463138,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.831,
+              "false_reject_rate": 0.16900000000000004
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.097,
+              "false_reject_rate": 0.903
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.021,
+              "false_reject_rate": 0.979
+            }
+          ]
+        },
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 16,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.24875,
+          "mean_heldout_gain": 0.0503885000000002,
+          "observed_overstatement": 0.19874999999999998,
+          "predicted_inflation": 0.2760329549293147,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.9485,
+              "false_reject_rate": 0.05149999999999999
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.349,
+              "false_reject_rate": 0.651
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.674,
+              "false_reject_rate": 0.32599999999999996
+            }
+          ]
+        },
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 16,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.24946875,
+          "mean_heldout_gain": 0.05079300000000022,
+          "observed_overstatement": 0.19946874999999997,
+          "predicted_inflation": 0.27551123382184617,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.9545,
+              "false_reject_rate": 0.045499999999999985
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.227,
+              "false_reject_rate": 0.773
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.024,
+              "false_reject_rate": 0.976
+            }
+          ]
+        },
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 64,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.3103125,
+          "mean_heldout_gain": 0.050039500000000195,
+          "observed_overstatement": 0.2603125,
+          "predicted_inflation": 0.3535868707341425,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.987,
+              "false_reject_rate": 0.013000000000000012
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.5325,
+              "false_reject_rate": 0.4675
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.667,
+              "false_reject_rate": 0.33299999999999996
+            }
+          ]
+        },
+        {
+          "selection_items": 16,
+          "heldout_items": 1000,
+          "candidates": 64,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.31003125,
+          "mean_heldout_gain": 0.050277500000000246,
+          "observed_overstatement": 0.26003125,
+          "predicted_inflation": 0.3509327540653783,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.987,
+              "false_reject_rate": 0.013000000000000012
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.39,
+              "false_reject_rate": 0.61
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.0275,
+              "false_reject_rate": 0.9725
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 1,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.0522578125,
+          "mean_heldout_gain": 0.04959450000000017,
+          "observed_overstatement": 0.0022578124999999977,
+          "predicted_inflation": 0,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.7145,
+              "false_reject_rate": 0.2855
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.096,
+              "false_reject_rate": 0.904
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.659,
+              "false_reject_rate": 0.34099999999999997
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 1,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.050953125,
+          "mean_heldout_gain": 0.050146000000000156,
+          "observed_overstatement": 0.0009531249999999991,
+          "predicted_inflation": 0,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.4895,
+              "false_reject_rate": 0.5105
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.029,
+              "false_reject_rate": 0.971
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.0225,
+              "false_reject_rate": 0.9775
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 4,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.1101171875,
+          "mean_heldout_gain": 0.05017650000000023,
+          "observed_overstatement": 0.0601171875,
+          "predicted_inflation": 0.08577172344310548,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.9195,
+              "false_reject_rate": 0.08050000000000002
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.2365,
+              "false_reject_rate": 0.7635000000000001
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.685,
+              "false_reject_rate": 0.31499999999999995
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 4,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.1114921875,
+          "mean_heldout_gain": 0.0505670000000002,
+          "observed_overstatement": 0.0614921875,
+          "predicted_inflation": 0.08573401716921741,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.7805,
+              "false_reject_rate": 0.21950000000000003
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.0945,
+              "false_reject_rate": 0.9055
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.0295,
+              "false_reject_rate": 0.9705
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 16,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.15121875,
+          "mean_heldout_gain": 0.04970300000000012,
+          "observed_overstatement": 0.10121875000000001,
+          "predicted_inflation": 0.14325328445880012,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.9885,
+              "false_reject_rate": 0.011499999999999955
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.4515,
+              "false_reject_rate": 0.5485
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.663,
+              "false_reject_rate": 0.33699999999999997
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 16,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.1529921875,
+          "mean_heldout_gain": 0.05057950000000015,
+          "observed_overstatement": 0.10299218749999998,
+          "predicted_inflation": 0.14329709375643057,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.9315,
+              "false_reject_rate": 0.0685
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.208,
+              "false_reject_rate": 0.792
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.0255,
+              "false_reject_rate": 0.9745
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 64,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.18596875,
+          "mean_heldout_gain": 0.04937700000000019,
+          "observed_overstatement": 0.13596874999999997,
+          "predicted_inflation": 0.18794377671867826,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.9975,
+              "false_reject_rate": 0.0024999999999999467
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.663,
+              "false_reject_rate": 0.33699999999999997
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.65,
+              "false_reject_rate": 0.35
+            }
+          ]
+        },
+        {
+          "selection_items": 64,
+          "heldout_items": 1000,
+          "candidates": 64,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.1873203125,
+          "mean_heldout_gain": 0.049756500000000155,
+          "observed_overstatement": 0.13732031249999999,
+          "predicted_inflation": 0.18821792785784325,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.9815,
+              "false_reject_rate": 0.01849999999999996
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.372,
+              "false_reject_rate": 0.628
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.024,
+              "false_reject_rate": 0.976
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 1,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.049796875,
+          "mean_heldout_gain": 0.04989650000000025,
+          "observed_overstatement": -0.00020312500000000538,
+          "predicted_inflation": 0,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.877,
+              "false_reject_rate": 0.123
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.218,
+              "false_reject_rate": 0.782
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.659,
+              "false_reject_rate": 0.34099999999999997
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 1,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.050486328125,
+          "mean_heldout_gain": 0.05111350000000005,
+          "observed_overstatement": 0.0004863281249999976,
+          "predicted_inflation": 0,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.515,
+              "false_reject_rate": 0.485
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.024,
+              "false_reject_rate": 0.976
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.03,
+              "false_reject_rate": 0.97
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 4,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.08054296875,
+          "mean_heldout_gain": 0.049441500000000145,
+          "observed_overstatement": 0.030542968749999996,
+          "predicted_inflation": 0.04320754966219508,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.988,
+              "false_reject_rate": 0.01200000000000001
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.493,
+              "false_reject_rate": 0.507
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.646,
+              "false_reject_rate": 0.354
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 4,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.079802734375,
+          "mean_heldout_gain": 0.050562000000000135,
+          "observed_overstatement": 0.029802734375,
+          "predicted_inflation": 0.043229777000642976,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.825,
+              "false_reject_rate": 0.17500000000000004
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.0685,
+              "false_reject_rate": 0.9315
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.026,
+              "false_reject_rate": 0.974
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 16,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.100044921875,
+          "mean_heldout_gain": 0.049906000000000075,
+          "observed_overstatement": 0.050044921874999995,
+          "predicted_inflation": 0.07263725652499817,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.9975,
+              "false_reject_rate": 0.0024999999999999467
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.717,
+              "false_reject_rate": 0.28300000000000003
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.664,
+              "false_reject_rate": 0.33599999999999997
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 16,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.10003125,
+          "mean_heldout_gain": 0.049850500000000235,
+          "observed_overstatement": 0.05003125,
+          "predicted_inflation": 0.0726689555804781,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.9395,
+              "false_reject_rate": 0.0605
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.1785,
+              "false_reject_rate": 0.8215
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.0235,
+              "false_reject_rate": 0.9765
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 64,
+          "min_gain": 0,
+          "mean_claimed_gain": 0.116169921875,
+          "mean_heldout_gain": 0.04956200000000018,
+          "observed_overstatement": 0.066169921875,
+          "predicted_inflation": 0.09562476304836073,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 1
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.87,
+              "false_reject_rate": 0.13
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.668,
+              "false_reject_rate": 0.33199999999999996
+            }
+          ]
+        },
+        {
+          "selection_items": 256,
+          "heldout_items": 1000,
+          "candidates": 64,
+          "min_gain": 0.05,
+          "mean_claimed_gain": 0.117306640625,
+          "mean_heldout_gain": 0.0506270000000002,
+          "observed_overstatement": 0.067306640625,
+          "predicted_inflation": 0.09576055628446602,
+          "rules": [
+            {
+              "name": "greedy",
+              "accept_rate": 0.989,
+              "false_reject_rate": 0.01100000000000001
+            },
+            {
+              "name": "selection-z",
+              "accept_rate": 0.3365,
+              "false_reject_rate": 0.6635
+            },
+            {
+              "name": "held-out",
+              "accept_rate": 0.0255,
+              "false_reject_rate": 0.9745
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Every acceptance rule sees the same rounds; the rules differ only in the data they read.",
+    "The null scenario has no real improvement, so every acceptance is a false accept.",
+    "The alternative scenario has a real improvement of 0.05, so every rejection is a false reject.",
+    "The held-out set is drawn fresh in each round, so the reported rate is the per-round rate of a rule that is applied once to one round.",
+    "The selection set is shared by all candidates in a round, and the candidate with the best selection score is the one that is judged."
+  ]
+}

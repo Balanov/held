@@ -1,0 +1,96 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.27'
+          check-latest: true
+      - name: Vet
+        run: go vet ./...
+      - name: Test
+        run: go test ./...
+
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.27'
+          check-latest: true
+      - name: Run the benchmark
+        run: go run ./bench --rounds 2000 --out bench/results
+      - name: Check that the published numbers still hold
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          with open('bench/results/benchmark.json') as fh:
+              report = json.load(fh)
+          null = next(s for s in report['scenarios'] if s['name'] == 'null')
+          row = next(c for c in null['configurations']
+                     if c['selection_items'] == 16 and c['candidates'] == 16
+                     and c['min_gain'] == 0)
+          rates = {r['name']: r['false_accept_rate'] for r in row['rules']}
+          assert rates['greedy'] > 0.8, rates
+          assert rates['held-out'] < 0.05, rates
+          assert rates['held-out'] < rates['selection-z'] < rates['greedy'], rates
+          print('benchmark holds:', rates)
+          PY
+      - name: Upload the raw results
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: bench/results
+
+  release:
+    needs: [test]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.27'
+          check-latest: true
+      - name: Build release binaries
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          version="${GITHUB_REF_NAME#v}"
+          for target in linux/amd64 linux/arm64 darwin/amd64 darwin/arm64 windows/amd64; do
+            os="${target%/*}"; arch="${target#*/}"
+            ext=""
+            [ "$os" = "windows" ] && ext=".exe"
+            out="dist/held_${version}_${os}_${arch}${ext}"
+            CGO_ENABLED=0 GOOS="$os" GOARCH="$arch" \
+              go build -trimpath -ldflags "-s -w -X main.Version=$version" \
+              -o "$out" ./cmd/held
+          done
+          (cd dist && sha256sum held_* > SHA256SUMS)
+          cat dist/SHA256SUMS
+      - name: Publish the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/held_*
+            dist/SHA256SUMS
+          generate_release_notes: true

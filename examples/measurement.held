@@ -1,0 +1,1 @@
+v=1, candidate=policy-v7, baseline=policy-v3, metric=success_rate, judge=state_check, selection=sel, heldout=hold, candidates=16, alpha=0.05, min_gain=0.01, power=0.8, locale=en;ru;es;zh

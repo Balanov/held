@@ -1,0 +1,71 @@
+# HELD
+
+> Measure on what you did not select.
+
+HELD is a dependency-free tool that decides whether a claimed improvement in an
+AI system or a robot policy is real. It measures the candidate against the
+baseline on data that was never used to select the candidate, corrects the
+selection-split gain for the winner's curse, and reports the verdict, the
+uncertainty and the amount of held-out evidence the claim would require.
+
+- Home: https://balanov.pro/held/
+- Repository: https://github.com/Balanov/held
+- License: MIT
+- Language: Go, standard library only, one static binary, offline.
+
+## Commands
+
+- `held init` writes a starter measurement contract.
+- `held check FILE` validates a contract and prints its SHA-256 pin.
+- `held plan FILE` reports how many held-out items a declared gain needs.
+- `held gate FILE --data FILE` decides whether the claim holds.
+- `held render FILE` renders the protocol in English, Russian, Spanish and Chinese.
+- `held seal FILE --data FILE` writes a pinned receipt.
+- `held demo` writes the example scores.
+
+Exit codes: `0` proven, `1` not proven or conflicting, `2` bad input.
+
+## The contract format
+
+One line of `key=value` clauses separated by commas. A value may be quoted and
+may then contain commas; a semicolon separates list elements; a hash starts a
+comment; newlines are whitespace.
+
+    v=1, candidate=policy-v7, baseline=policy-v3, metric=success_rate,
+    judge=state_check, selection=sel, heldout=hold, candidates=16,
+    alpha=0.05, min_gain=0.01, power=0.8, locale=en;ru;es;zh
+
+Keys: `v`, `candidate`, `baseline`, `metric`, `judge`, `selection`, `heldout`,
+`candidates`, `corr`, `alpha`, `min_gain`, `power`, `locale`, `note`.
+
+The canonical form is one line with a fixed clause order; its SHA-256 is the pin.
+
+## The scores format
+
+One record is one outcome of one system on one item, as JSON Lines or a JSON
+array:
+
+    {"split":"hold","system":"policy-v7","item":"h001","score":1}
+
+`split` names the selection split and the held-out split, `system` names the
+baseline and the candidate, `item` pairs the two systems, `score` is in [0,1].
+
+## Why it exists
+
+Self-improvement loops keep the candidate that scores best on a small evaluation
+set and report that score. The number is inflated by the selection. Measured on
+a synthetic benchmark with 2 000 rounds, 16 selection items and 16 candidates,
+greedy acceptance wrongly keeps a candidate with no real improvement in 89.9 %
+of rounds, a plain significance test on the selection set in 23.9 %, and the
+held-out rule in 2.3 % against a nominal 5 %.
+
+Published sources on the same failure: arXiv 2610.09239, arXiv 2607.25152,
+arXiv 2609.31760, arXiv 2608.20290.
+
+## Boundaries
+
+HELD reads outcomes; it does not run models, agents or robots. It does not
+explain why a candidate failed to improve, only that the improvement is not
+established. The sample-size plan uses a normal approximation for a paired
+difference. The benchmark is synthetic and reproduces the mechanism, not the
+published numbers of any particular paper.

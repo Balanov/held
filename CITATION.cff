@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use HELD in academic work, please cite it as below."
+title: "HELD: Held-out measurement for claimed AI and robot improvements"
+abstract: >-
+  HELD is a dependency-free tool that decides whether a claimed improvement in
+  an AI system or a robot policy is real. It measures the candidate against the
+  baseline on data that was never used to select the candidate, corrects the
+  selection-split gain for the winner's curse, and reports the verdict, the
+  uncertainty and the amount of held-out evidence the claim would require.
+type: software
+authors:
+  - family-names: Balanov
+    given-names: Anton
+repository-code: "https://github.com/Balanov/held"
+url: "https://balanov.pro/held/"
+license: MIT
+version: 0.1.0
+date-released: "2026-11-14"
+keywords:
+  - evaluation
+  - reproducibility
+  - self-improvement
+  - robotics
+  - statistics
+  - agent evaluation

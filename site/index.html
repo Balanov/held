@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="HELD measures a claimed AI or robot improvement on data that was never used to select it. One comma-separated line, one static binary, MIT.">
+<meta name="theme-color" content="#101713">
+<title>HELD — Measure on what you did not select</title>
+<link rel="icon" type="image/svg+xml" href="./assets/logo.svg">
+<style>
+  :root{
+    --bg:#101713; --panel:#161d18; --panel2:#1b231d; --line:#26302a;
+    --ink:#e9efe9; --muted:#8d9a90; --accent:#c8ff5a; --accent-dim:#9dc73f;
+    --danger:#ff7a6b; --ok:#7ee0a0;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .mono{font-family:var(--mono)}
+
+  /* ---------- topbar ---------- */
+  .topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+    background:rgba(16,23,19,.86);border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex;align-items:center;gap:20px;height:62px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.16em;text-decoration:none;font-size:15px}
+  .brand img{width:32px;height:32px;border-radius:9px;display:block}
+  nav{margin-left:auto;display:flex;gap:22px;align-items:center}
+  nav a{color:var(--muted);text-decoration:none;font-size:14px}
+  nav a:hover{color:var(--ink)}
+  .lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .lang button{background:none;border:0;color:var(--muted);font:600 12px/1 var(--sans);
+    letter-spacing:.08em;padding:8px 11px;cursor:pointer}
+  .lang button[aria-pressed="true"]{background:var(--accent);color:#101713}
+  .gh{width:34px;height:34px;border:1px solid var(--line);border-radius:9px;display:grid;place-items:center}
+  .gh svg{width:18px;height:18px;fill:var(--ink)}
+
+  /* ---------- hero ---------- */
+  .hero{padding:76px 0 56px;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .pill{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line);
+    border-radius:999px;padding:7px 14px;font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+  .pill i{width:7px;height:7px;border-radius:50%;background:var(--accent);display:block}
+  h1{font-size:52px;line-height:1.06;margin:22px 0 18px;letter-spacing:-.025em;font-weight:750}
+  h1 em{font-style:normal;color:var(--accent)}
+  .lead{font-size:18px;color:var(--muted);max-width:56ch;margin:0 0 30px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:9px;border-radius:11px;padding:13px 20px;
+    font-weight:650;font-size:14.5px;text-decoration:none;border:1px solid transparent;cursor:pointer}
+  .btn.primary{background:var(--accent);color:#101713}
+  .btn.primary:hover{background:#d6ff7d}
+  .btn.ghost{border-color:var(--line);color:var(--ink)}
+  .btn.ghost:hover{border-color:var(--accent)}
+  .meta{margin-top:20px;font-size:13px;color:var(--muted);display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+  .meta .stars{color:var(--ink);font-weight:600}
+  .meta .stars b{color:var(--accent)}
+
+  /* ---------- comma chain: the visual language ---------- */
+  .chain{display:flex;flex-wrap:wrap;gap:0;align-items:stretch;margin:0;padding:0;list-style:none}
+  .chain li{display:flex;align-items:baseline}
+  .chain .clause{display:inline-flex;align-items:baseline;gap:7px;background:var(--panel);
+    border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-family:var(--mono);font-size:13px}
+  .chain .clause b{color:var(--accent);font-weight:600}
+  .chain .clause span{color:var(--ink)}
+  .chain .sep{color:var(--accent-dim);font-family:var(--mono);font-size:15px;padding:0 8px;opacity:.8}
+
+  /* ---------- panels ---------- */
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px}
+  .pad{padding:22px}
+  .panel h3{margin:0 0 8px;font-size:16px}
+  .panel p{margin:0;color:var(--muted);font-size:14px}
+
+  /* ---------- live demo ---------- */
+  .live{margin:26px 0 0;padding:26px;display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .live h2{font-size:13px;letter-spacing:.14em;color:var(--muted);margin:0 0 18px;font-weight:700}
+  .ctrl{margin-bottom:20px}
+  .ctrl label{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:8px}
+  .ctrl label b{font-family:var(--mono);color:var(--accent);font-weight:600}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  .readout{display:grid;gap:10px}
+  .ro{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+    border-bottom:1px dashed var(--line);padding-bottom:9px}
+  .ro:last-child{border-bottom:0}
+  .ro span{color:var(--muted);font-size:13px}
+  .ro strong{font-family:var(--mono);font-size:19px;font-weight:600}
+  .ro strong.good{color:var(--ok)} .ro strong.bad{color:var(--danger)} .ro strong.warn{color:var(--accent)}
+  .verdict{margin-top:16px;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.45}
+  .verdict b{display:block;font-size:11px;letter-spacing:.14em;margin-bottom:6px}
+  .verdict.conflict{background:rgba(255,122,107,.09);border:1px solid rgba(255,122,107,.35);color:#ffc4bc}
+  .verdict.proven{background:rgba(126,224,160,.09);border:1px solid rgba(126,224,160,.35);color:#bdf3d4}
+  .note{font-size:12px;color:var(--muted);margin-top:14px}
+
+  /* ---------- sections ---------- */
+  section{padding:64px 0}
+  .sechead{max-width:70ch;margin-bottom:30px}
+  .sechead h2{font-size:31px;margin:0 0 12px;letter-spacing:-.02em;line-height:1.16}
+  .sechead p{color:var(--muted);margin:0;font-size:16px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .icon{width:38px;height:38px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);
+    display:grid;place-items:center;margin-bottom:14px;font-family:var(--mono);font-size:15px;color:var(--accent)}
+  .code{font-family:var(--mono);font-size:13px;background:#0c110e;border:1px solid var(--line);
+    border-radius:12px;padding:18px;overflow-x:auto;white-space:pre;color:#cfe0d2;line-height:1.75}
+  .code .c{color:#6f7f73}.code .k{color:var(--accent)}.code .s{color:#8fd6ff}
+
+  /* ---------- languages ---------- */
+  .langs{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .langcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .langcard h4{margin:0 0 12px;font-size:12px;letter-spacing:.12em;color:var(--accent);font-weight:700}
+  .langcard dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:12px}
+  .langcard dt{color:var(--muted);white-space:nowrap}
+  .langcard dd{margin:0;font-family:var(--mono);color:var(--ink);text-align:right}
+
+  /* ---------- table ---------- */
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-size:11.5px;letter-spacing:.1em;font-weight:700;text-transform:uppercase}
+  td.num,th.num{text-align:right;font-family:var(--mono)}
+  tr.win td{background:rgba(200,255,90,.05)}
+  td.bad{color:var(--danger)} td.good{color:var(--ok)}
+  .warnbox{border-left:3px solid var(--accent-dim);padding:12px 16px;background:rgba(200,255,90,.04);
+    border-radius:0 10px 10px 0;color:var(--muted);font-size:13.5px;margin-top:18px}
+  .warnbox b{color:var(--ink)}
+
+  /* ---------- faq ---------- */
+  details{border-bottom:1px solid var(--line);padding:16px 0}
+  summary{cursor:pointer;font-weight:620;font-size:15.5px;list-style:none;display:flex;justify-content:space-between;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";color:var(--accent);font-size:20px;line-height:1}
+  details[open] summary::after{content:"−"}
+  details p{color:var(--muted);margin:12px 0 2px;font-size:14.5px;max-width:80ch}
+
+  /* ---------- cta + footer ---------- */
+  .final{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:40px;
+    display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap}
+  .final h2{margin:0 0 8px;font-size:28px;letter-spacing:-.02em}
+  .final p{margin:0;color:var(--muted)}
+  .cite{font-family:var(--mono);font-size:12px;background:#0c110e;border:1px solid var(--line);
+    border-radius:10px;padding:16px;overflow-x:auto;color:#cfe0d2;white-space:pre}
+  footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:13px}
+  footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;align-items:center}
+  footer a{color:var(--muted)}
+
+  @media (max-width:900px){
+    .hero,.live{grid-template-columns:1fr}
+    .grid3,.langs,.grid2{grid-template-columns:1fr}
+    h1{font-size:38px}
+    nav a{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="./assets/logo.svg" alt=""><span>HELD</span></a>
+    <nav>
+      <a href="#live" data-i18n="nav.live">Live</a>
+      <a href="#what" data-i18n="nav.what">What you get</a>
+      <a href="#manifest" data-i18n="nav.manifest">Manifest</a>
+      <a href="#languages" data-i18n="nav.langs">Languages</a>
+      <a href="#benchmarks" data-i18n="nav.bench">Benchmarks</a>
+      <a href="#faq" data-i18n="nav.faq">FAQ</a>
+      <div class="lang" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+      </div>
+      <a class="gh" href="https://github.com/Balanov/held" aria-label="HELD on GitHub">
+        <svg viewBox="0 0 24 24"><path d="M12 .3C5.4.3 0 5.7 0 12.3c0 5.3 3.4 9.8 8.2 11.4.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8.6 1.8 1.2 0 .8-.6 1.3-1.2 1.6.8.4 1.5.1 1.8-.6 0-.1.4-1.3 0-2.6-2.7-.7-3.5-2.6-3.5-4.6 0-1.3.5-2.4 1.2-3.2-.1-.1-.5-1.6.2-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.3 3.1.2 3.2.7.8 1.3 1.9 1.3 3.2 0 2.3-1.3 4.2-3.5 4.9 1.4.4 2.6 1.5 2.6 3.1v4.6c0 .3.2.7.8.6 4.8-1.6 8.2-6.1 8.2-11.4C24 5.7 18.6.3 12 .3Z"/></svg>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <span class="pill"><i></i><span data-i18n="hero.badge">Free and open source · MIT</span></span>
+        <h1 data-i18n="hero.title">Measure on what you did <em>not</em> select.</h1>
+        <p class="lead" data-i18n="hero.lead">Your agent claims +12%. HELD measures the same candidate on items that were never used to pick it, corrects the number for the winner's curse, and tells you whether the gain survives — or how much evidence it would need.</p>
+        <div class="cta">
+          <a class="btn primary" href="https://github.com/Balanov/held/releases/latest" data-i18n="hero.download">Download HELD</a>
+          <a class="btn ghost" href="#live" data-i18n="hero.live">See the live numbers</a>
+        </div>
+        <div class="meta">
+          <span data-i18n="hero.meta">v0.1.0 · Windows, macOS, Linux · one static binary</span>
+          <span class="stars">Balanov/held · <b id="gh-stars">—</b> ★ · <b id="gh-forks">—</b> ⑂</span>
+        </div>
+      </div>
+      <div class="panel pad">
+        <h3 data-i18n="live.title">Live: what selection costs you</h3>
+        <p data-i18n="live.sub">The same formulas the tool uses. Move the sliders.</p>
+        <div style="margin-top:18px">
+          <div class="ctrl">
+            <label><span data-i18n="live.sel">Selection items</span><b id="v-sel">16</b></label>
+            <input type="range" id="s-sel" min="4" max="512" step="4" value="16">
+          </div>
+          <div class="ctrl">
+            <label><span data-i18n="live.cand">Candidates in the round</span><b id="v-cand">16</b></label>
+            <input type="range" id="s-cand" min="1" max="128" step="1" value="16">
+          </div>
+          <div class="ctrl">
+            <label><span data-i18n="live.claim">Gain the loop claims</span><b id="v-claim">12.0</b></label>
+            <input type="range" id="s-claim" min="0" max="40" step="0.5" value="12">
+          </div>
+        </div>
+        <div class="readout">
+          <div class="ro"><span data-i18n="live.reported">Gain reported by the loop</span><strong id="o-reported">+12.0</strong></div>
+          <div class="ro"><span data-i18n="live.explained">Explained by selection alone</span><strong id="o-explained">+0.0</strong></div>
+          <div class="ro"><span data-i18n="live.after">After the correction</span><strong id="o-after">+12.0</strong></div>
+          <div class="ro"><span data-i18n="live.need">Held-out items for a 1-point gain</span><strong id="o-need">39241</strong></div>
+        </div>
+        <div class="verdict conflict" id="o-verdict"><b data-i18n="live.verdict">VERDICT</b><span id="o-verdict-text"></span></div>
+        <p class="note" data-i18n="live.note">The browser uses an approximate normal quantile; the tool computes it exactly. The false-accept rates on the benchmark page are measured, not estimated.</p>
+      </div>
+    </section>
+
+    <section id="live" style="padding-top:8px">
+      <div class="panel live">
+        <div>
+          <h2 data-i18n="chain.title">The contract is one line of clauses</h2>
+          <ul class="chain" id="chain"></ul>
+          <p class="note" data-i18n="chain.note">Every clause is key=value. The comma is the whole grammar. A quoted value may contain commas; a semicolon separates a list; a hash starts a comment; a newline is whitespace, so the contract may be wrapped after any comma and still parse to exactly the same contract.</p>
+        </div>
+        <div>
+          <h2 data-i18n="cmd.title">One command, three exit codes</h2>
+          <div class="code" id="cmdcode"></div>
+          <p class="note" data-i18n="cmd.note">0 proven · 1 not proven or conflicting · 2 bad input. The gate is a CI step without a wrapper script.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="what">
+      <div class="sechead">
+        <h2 data-i18n="what.title">Not another dashboard. A verdict.</h2>
+        <p data-i18n="what.lead">Eval harnesses report means and confidence intervals but do not correct for the fact that the candidate was selected on the very set they report. HELD reads the frozen control and decides.</p>
+      </div>
+      <div class="grid3">
+        <article class="panel pad">
+          <div class="icon">⌾</div>
+          <h3 data-i18n="a1.title">A gate, not a graph</h3>
+          <p data-i18n="a1.body">The verdict comes from the held-out interval alone. A candidate passes only when the lower end of that interval clears the declared minimum gain. Everything else is reported, nothing is skipped.</p>
+        </article>
+        <article class="panel pad">
+          <div class="icon">≈</div>
+          <h3 data-i18n="a2.title">The winner's curse, corrected</h3>
+          <p data-i18n="a2.body">The gain on the selection set is inflated by about one standard error times the expected maximum of the candidates produced. HELD reports the inflation and what remains after removing it.</p>
+        </article>
+        <article class="panel pad">
+          <div class="icon">⚑</div>
+          <h3 data-i18n="a3.title">The conflict, named</h3>
+          <p data-i18n="a3.body">A candidate that looks better on the selection set but does not clear the held-out bar is reported as conflicting, not as unproven. That is the exact shape of a loop that has fooled itself.</p>
+        </article>
+        <article class="panel pad">
+          <div class="icon">⌗</div>
+          <h3 data-i18n="a4.title">How much evidence</h3>
+          <p data-i18n="a4.body">held plan computes how many held-out items a declared gain needs at a declared significance and power. Proving a one point gain on a binary metric needs about 39 000 paired items.</p>
+        </article>
+        <article class="panel pad">
+          <div class="icon">⌸</div>
+          <h3 data-i18n="a5.title">A pinned protocol</h3>
+          <p data-i18n="a5.body">The SHA-256 of the canonical contract is the pin. A claim cannot be re-described after the fact without breaking the pin, and held seal adds the hash of the data file.</p>
+        </article>
+        <article class="panel pad">
+          <div class="icon">文</div>
+          <h3 data-i18n="a6.title">Four languages, one source</h3>
+          <p data-i18n="a6.body">English, Russian, Spanish and Chinese render from the same contract, so a number cannot drift between translations. A safety or review protocol in the reader's language, from one file.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="manifest">
+      <div class="sechead">
+        <h2 data-i18n="m.title">The contract</h2>
+        <p data-i18n="m.lead">One line, one file, one hash. It declares what was measured, on what, with what threshold, and it is the thing you publish.</p>
+      </div>
+      <div class="grid2">
+        <div class="code" id="manifestcode"></div>
+        <div>
+          <div class="panel pad" style="margin-bottom:14px">
+            <h3 data-i18n="m.keys">Clauses</h3>
+            <div class="code" style="margin-top:12px" id="keyscode"></div>
+          </div>
+          <p class="note" data-i18n="m.note">The scores file is one record per outcome: a split, a system, an item and a score. JSON Lines or a JSON array. Nothing else is required, so any harness can emit it.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="languages">
+      <div class="sechead">
+        <h2 data-i18n="l.title">One contract, four languages</h2>
+        <p data-i18n="l.lead">Real output of held render on the same contract and the same scores. The numbers are identical because there is only one number.</p>
+      </div>
+      <div class="langs" id="langcards"></div>
+    </section>
+
+    <section id="benchmarks">
+      <div class="sechead">
+        <h2 data-i18n="b.title">Measured, not asserted</h2>
+        <p data-i18n="b.lead">2 000 rounds per configuration on a synthetic benchmark with a known truth. Every acceptance rule sees the same rounds. The nominal error rate is 5 %.</p>
+      </div>
+      <div class="panel pad" style="overflow-x:auto">
+        <table>
+          <thead><tr>
+            <th data-i18n="b.h1">Selection items</th>
+            <th data-i18n="b.h2">Candidates</th>
+            <th class="num" data-i18n="b.h3">Greedy</th>
+            <th class="num" data-i18n="b.h4">Significance on the selection set</th>
+            <th class="num" data-i18n="b.h5">HELD</th>
+          </tr></thead>
+          <tbody id="benchbody"></tbody>
+        </table>
+      </div>
+      <div class="warnbox">
+        <b data-i18n="b.method">Method.</b>
+        <span data-i18n="b.methodBody">A round produces N candidates; the loop keeps the one that scores best on the selection split; the winner is then measured on the held-out split, which took no part in the selection. The truth is known by construction, so the false-accept rate is measured rather than argued about. The generator is a SplitMix64 stream with an explicit seed, so the numbers are reproducible byte for byte on any machine. The harness and the shipped gate were driven over the same rounds and disagreed on 0 of 201 rounds.</span>
+      </div>
+      <div class="warnbox" style="border-left-color:#ff7a6b;background:rgba(255,122,107,.05)">
+        <b data-i18n="b.limit">What this is not.</b>
+        <span data-i18n="b.limitBody">The benchmark is synthetic. It reproduces the mechanism of the selection bias, not the published numbers of any particular paper. HELD pays for its honesty in power: with 1 000 held-out items it will refuse to certify a five point gain, because a thousand items cannot prove five points. held plan tells you what would.</span>
+      </div>
+      <p class="note" style="margin-top:18px">
+        <a href="https://github.com/Balanov/held/blob/main/BENCHMARKS.md" style="color:var(--accent)" data-i18n="b.more">Full numbers, method and raw JSON →</a>
+      </p>
+    </section>
+
+    <section id="faq">
+      <div class="sechead"><h2 data-i18n="f.title">Questions, answered plainly</h2></div>
+      <details><summary data-i18n="q1.q">Does it replace my evaluation harness?</summary><p data-i18n="q1.a">No. It reads outcomes. Your harness produces a scores file, one record per outcome, and HELD decides whether the difference between the two systems survives. It does not run models, agents or robots, and it does not need to know what produced the scores.</p></details>
+      <details><summary data-i18n="q2.q">Is the held-out set really never used for selection?</summary><p data-i18n="q2.a">HELD cannot know that. It takes the split labels as a claim from the owner of the data. What it can do is pin the contract and the data file, so a reviewer can see that the protocol did not change between rounds. That pin is the reason the receipt exists.</p></details>
+      <details><summary data-i18n="q3.q">Why does it refuse improvements that other tools accept?</summary><p data-i18n="q3.a">Because it will not certify what the data cannot support. On the benchmark, greedy acceptance wrongly keeps a candidate with no real improvement in 89.9 % of rounds and the held-out rule in 2.3 %, against a nominal 5 %. The price is power, and held plan states the price in items.</p></details>
+      <details><summary data-i18n="q4.q">Does this work for robot policies?</summary><p data-i18n="q4.a">Yes. A robot policy improvement is a success rate over tasks, and the arithmetic is identical: a selection set of tasks used to pick the policy, a held-out suite never used for selection, and a candidate that wins on the first and ties on the second. The published work on recursive self-improvement in robotics reports exactly this failure: changes kept passing their own tests while the target task never succeeded.</p></details>
+      <details><summary data-i18n="q5.q">Is the correction exact?</summary><p data-i18n="q5.a">It is an upper bound. The prediction assumes the candidates in a round are independent. When they share a baseline, their errors move together, the real inflation is smaller and the correction is conservative. The benchmark measures both, and the corr clause lets you model the correlation explicitly.</p></details>
+      <details><summary data-i18n="q6.q">Does it need the network?</summary><p data-i18n="q6.a">No. One static binary, no runtime dependencies, no account, no telemetry, no network. Everything it does is arithmetic on files you already have.</p></details>
+    </section>
+
+    <section>
+      <div class="final">
+        <div>
+          <h2 data-i18n="cta.title">Measure on what you did not select.</h2>
+          <p data-i18n="cta.body">Free under MIT. Fork it, change it, ship it.</p>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a class="btn primary" href="https://github.com/Balanov/held/releases/latest" data-i18n="cta.download">Download v0.1.0</a>
+          <a class="btn ghost" href="https://github.com/Balanov/held" data-i18n="cta.repo">GitHub</a>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <details class="panel pad">
+        <summary><span data-i18n="cite">Cite this work — BibTeX</span></summary>
+        <div class="cite" id="citecode" style="margin-top:14px"></div>
+      </details>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span data-i18n="foot.made">Built by Anton Balanov · MIT</span>
+    <div style="display:flex;gap:18px">
+      <a href="https://balanov.pro/all/">balanov.pro</a>
+      <a href="https://github.com/Balanov/held">GitHub</a>
+      <a href="https://github.com/Balanov/held/blob/main/LICENSE">License</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var D = {
+    en: {
+      "nav.live":"Live","nav.what":"What you get","nav.manifest":"Manifest","nav.langs":"Languages",
+      "nav.bench":"Benchmarks","nav.faq":"FAQ",
+      "hero.badge":"Free and open source · MIT",
+      "hero.title":"Measure on what you did <em>not</em> select.",
+      "hero.lead":"Your agent claims +12%. HELD measures the same candidate on items that were never used to pick it, corrects the number for the winner's curse, and tells you whether the gain survives — or how much evidence it would need.",
+      "hero.download":"Download HELD","hero.live":"See the live numbers",
+      "hero.meta":"v0.1.0 · Windows, macOS, Linux · one static binary",
+      "live.title":"Live: what selection costs you",
+      "live.sub":"The same formulas the tool uses. Move the sliders.",
+      "live.sel":"Selection items","live.cand":"Candidates in the round","live.claim":"Gain the loop claims",
+      "live.reported":"Gain reported by the loop","live.explained":"Explained by selection alone",
+      "live.after":"After the correction","live.need":"Held-out items for a 1-point gain",
+      "live.verdict":"VERDICT","live.note":"The browser uses an approximate normal quantile; the tool computes it exactly. The false-accept rates on the benchmark page are measured, not estimated.",
+      "chain.title":"The contract is one line of clauses",
+      "chain.note":"Every clause is key=value. The comma is the whole grammar. A quoted value may contain commas; a semicolon separates a list; a hash starts a comment; a newline is whitespace, so the contract may be wrapped after any comma and still parse to exactly the same contract.",
+      "cmd.title":"One command, three exit codes",
+      "cmd.note":"0 proven · 1 not proven or conflicting · 2 bad input. The gate is a CI step without a wrapper script.",
+      "what.title":"Not another dashboard. A verdict.",
+      "what.lead":"Eval harnesses report means and confidence intervals but do not correct for the fact that the candidate was selected on the very set they report. HELD reads the frozen control and decides.",
+      "a1.title":"A gate, not a graph","a1.body":"The verdict comes from the held-out interval alone. A candidate passes only when the lower end of that interval clears the declared minimum gain. Everything else is reported, nothing is skipped.",
+      "a2.title":"The winner's curse, corrected","a2.body":"The gain on the selection set is inflated by about one standard error times the expected maximum of the candidates produced. HELD reports the inflation and what remains after removing it.",
+      "a3.title":"The conflict, named","a3.body":"A candidate that looks better on the selection set but does not clear the held-out bar is reported as conflicting, not as unproven. That is the exact shape of a loop that has fooled itself.",
+      "a4.title":"How much evidence","a4.body":"held plan computes how many held-out items a declared gain needs at a declared significance and power. Proving a one point gain on a binary metric needs about 39 000 paired items.",
+      "a5.title":"A pinned protocol","a5.body":"The SHA-256 of the canonical contract is the pin. A claim cannot be re-described after the fact without breaking the pin, and held seal adds the hash of the data file.",
+      "a6.title":"Four languages, one source","a6.body":"English, Russian, Spanish and Chinese render from the same contract, so a number cannot drift between translations. A safety or review protocol in the reader's language, from one file.",
+      "m.title":"The contract",
+      "m.lead":"One line, one file, one hash. It declares what was measured, on what, with what threshold, and it is the thing you publish.",
+      "m.keys":"Clauses",
+      "m.note":"The scores file is one record per outcome: a split, a system, an item and a score. JSON Lines or a JSON array. Nothing else is required, so any harness can emit it.",
+      "l.title":"One contract, four languages",
+      "l.lead":"Real output of held render on the same contract and the same scores. The numbers are identical because there is only one number.",
+      "b.title":"Measured, not asserted",
+      "b.lead":"2 000 rounds per configuration on a synthetic benchmark with a known truth. Every acceptance rule sees the same rounds. The nominal error rate is 5 %.",
+      "b.h1":"Selection items","b.h2":"Candidates","b.h3":"Greedy","b.h4":"Significance on the selection set","b.h5":"HELD",
+      "b.method":"Method.","b.methodBody":"A round produces N candidates; the loop keeps the one that scores best on the selection split; the winner is then measured on the held-out split, which took no part in the selection. The truth is known by construction, so the false-accept rate is measured rather than argued about. The generator is a SplitMix64 stream with an explicit seed, so the numbers are reproducible byte for byte on any machine. The harness and the shipped gate were driven over the same rounds and disagreed on 0 of 201 rounds.",
+      "b.limit":"What this is not.","b.limitBody":"The benchmark is synthetic. It reproduces the mechanism of the selection bias, not the published numbers of any particular paper. HELD pays for its honesty in power: with 1 000 held-out items it will refuse to certify a five point gain, because a thousand items cannot prove five points. held plan tells you what would.",
+      "b.more":"Full numbers, method and raw JSON →",
+      "f.title":"Questions, answered plainly",
+      "q1.q":"Does it replace my evaluation harness?","q1.a":"No. It reads outcomes. Your harness produces a scores file, one record per outcome, and HELD decides whether the difference between the two systems survives. It does not run models, agents or robots, and it does not need to know what produced the scores.",
+      "q2.q":"Is the held-out set really never used for selection?","q2.a":"HELD cannot know that. It takes the split labels as a claim from the owner of the data. What it can do is pin the contract and the data file, so a reviewer can see that the protocol did not change between rounds. That pin is the reason the receipt exists.",
+      "q3.q":"Why does it refuse improvements that other tools accept?","q3.a":"Because it will not certify what the data cannot support. On the benchmark, greedy acceptance wrongly keeps a candidate with no real improvement in 89.9 % of rounds and the held-out rule in 2.3 %, against a nominal 5 %. The price is power, and held plan states the price in items.",
+      "q4.q":"Does this work for robot policies?","q4.a":"Yes. A robot policy improvement is a success rate over tasks, and the arithmetic is identical: a selection set of tasks used to pick the policy, a held-out suite never used for selection, and a candidate that wins on the first and ties on the second. The published work on recursive self-improvement in robotics reports exactly this failure: changes kept passing their own tests while the target task never succeeded.",
+      "q5.q":"Is the correction exact?","q5.a":"It is an upper bound. The prediction assumes the candidates in a round are independent. When they share a baseline, their errors move together, the real inflation is smaller and the correction is conservative. The benchmark measures both, and the corr clause lets you model the correlation explicitly.",
+      "q6.q":"Does it need the network?","q6.a":"No. One static binary, no runtime dependencies, no account, no telemetry, no network. Everything it does is arithmetic on files you already have.",
+      "cta.title":"Measure on what you did not select.","cta.body":"Free under MIT. Fork it, change it, ship it.",
+      "cta.download":"Download v0.1.0","cta.repo":"GitHub",
+      "cite":"Cite this work — BibTeX",
+      "foot.made":"Built by Anton Balanov · MIT",
+      "verdict.conflict":"CONFLICTING","verdict.proven":"PROVEN",
+      "verdict.conflictText":"The claim is fully explained by selection. On fresh data it is worth ",
+      "verdict.provenText":"The claim survives the selection correction. It still has to clear the held-out bar, and only fresh data can do that.",
+      "unit":"points"
+    },
+    ru: {
+      "nav.live":"Демо","nav.what":"Что даёт","nav.manifest":"Контракт","nav.langs":"Языки",
+      "nav.bench":"Замеры","nav.faq":"Вопросы",
+      "hero.badge":"Свободный проект с открытым кодом · MIT",
+      "hero.title":"Измеряй на том, что ты <em>не</em> отбирал.",
+      "hero.lead":"Твой агент заявляет +12%. HELD измеряет того же кандидата на данных, которые никогда не участвовали в его выборе, корректирует число за «проклятие победителя» и говорит, выживает ли выигрыш — или сколько данных для этого нужно.",
+      "hero.download":"Скачать HELD","hero.live":"Живые числа",
+      "hero.meta":"v0.1.0 · Windows, macOS, Linux · один статический бинарник",
+      "live.title":"Демо: сколько стоит отбор",
+      "live.sub":"Те же формулы, что и в инструменте. Двигай ползунки.",
+      "live.sel":"Элементов отбора","live.cand":"Кандидатов в раунде","live.claim":"Прирост, который заявляет петля",
+      "live.reported":"Прирост, который рапортует петля","live.explained":"Объясняется одним отбором",
+      "live.after":"После коррекции","live.need":"Отложенных элементов на прирост в 1 пункт",
+      "live.verdict":"ВЕРДИКТ","live.note":"В браузере используется приближённый нормальный квантиль; инструмент считает точно. Доли ложных принятий на странице замеров измерены, а не оценены.",
+      "chain.title":"Контракт — одна строка клаузов",
+      "chain.note":"Каждый клауз — key=value. Запятая — это весь синтаксис. В кавычках значение может содержать запятые; точка с запятой разделяет список; решётка начинает комментарий; перевод строки — пробел, поэтому контракт можно переносить после любой запятой и получить ровно тот же контракт.",
+      "cmd.title":"Одна команда, три кода выхода",
+      "cmd.note":"0 доказано · 1 не доказано или противоречие · 2 плохие входные данные. Гейт работает как шаг CI без обёртки.",
+      "what.title":"Не ещё одна панель графиков. Вердикт.",
+      "what.lead":"Eval-фреймворки считают средние и доверительные интервалы, но не корректируют факт того, что кандидат был выбран на той самой выборке, которую рапортуют. HELD читает замороженный контроль и решает.",
+      "a1.title":"Гейт, а не график","a1.body":"Вердикт принимается только по отложенной выборке: кандидат проходит, когда нижняя граница её интервала превышает объявленный минимальный прирост. Всё остальное отчитывается, ничего не пропускается.",
+      "a2.title":"«Проклятие победителя», исправленное","a2.body":"Прирост на отборной выборке завышен примерно на одно стандартное отклонение, умноженное на ожидаемый максимум по произведённым кандидатам. HELD показывает и завышение, и то, что остаётся после его вычитания.",
+      "a3.title":"Противоречие названо","a3.body":"Кандидат, который лучше выглядит на отборной выборке, но не проходит отложенную, помечается как противоречие, а не как «не доказано». Это в точности форма петли, обманувшей саму себя.",
+      "a4.title":"Сколько нужно данных","a4.body":"held plan считает, сколько элементов отложенной выборки нужно под объявленный прирост при заданной значимости и мощности. Доказать улучшение на один пункт на бинарной метрике — около 39 000 парных элементов.",
+      "a5.title":"Закреплённый протокол","a5.body":"SHA-256 канонического контракта — это пин. Переписать заявление задним числом, не сломав пин, нельзя, а held seal добавляет хеш файла данных.",
+      "a6.title":"Четыре языка, один источник","a6.body":"Английский, русский, испанский и китайский рендерятся из одного контракта, поэтому число не может «разъехаться» между переводами. Протокол безопасности или проверки на языке читателя — из одного файла.",
+      "m.title":"Контракт",
+      "m.lead":"Одна строка, один файл, один хеш. В нём объявлено, что и на чём измеряли, с каким порогом — и это то, что вы публикуете.",
+      "m.keys":"Клаузы",
+      "m.note":"Файл результатов — одна запись на исход: split, system, item и score. JSON Lines или JSON-массив. Больше ничего не нужно, поэтому его может писать любой harness.",
+      "l.title":"Один контракт, четыре языка",
+      "l.lead":"Реальный вывод held render на одном контракте и одних данных. Числа совпадают, потому что число одно.",
+      "b.title":"Измерено, а не заявлено",
+      "b.lead":"2 000 раундов на конфигурацию на синтетическом бенчмарке с известной истиной. Все правила принятия видят одни и те же раунды. Номинальный уровень ошибки — 5 %.",
+      "b.h1":"Элементов отбора","b.h2":"Кандидатов","b.h3":"Жадное","b.h4":"Значимость по отборной выборке","b.h5":"HELD",
+      "b.method":"Методика.","b.methodBody":"Раунд порождает N кандидатов; петля оставляет того, кто набрал больше очков на отборной выборке; победителя затем измеряют на отложенной выборке, которая в отборе не участвовала. Истина известна по построению, поэтому доля ложных принятий измеряется, а не обсуждается. Генератор — поток SplitMix64 с явным зерном, поэтому числа воспроизводятся побайтово на любой машине. Харнесс и поставляемый гейт прогонялись на одних и тех же раундах и разошлись на 0 из 201 раунда.",
+      "b.limit":"Чем это не является.","b.limitBody":"Бенчмарк синтетический. Он воспроизводит механизм смещения отбора, а не числа конкретных статей. HELD платит за честность мощностью: на 1 000 отложенных элементах он не подтвердит улучшение на пять пунктов, потому что тысяча элементов не доказывает пять пунктов. held plan скажет, чего не хватает.",
+      "b.more":"Полные числа, методика и сырой JSON →",
+      "f.title":"Вопросы, отвечены прямо",
+      "q1.q":"Заменит ли он мой eval-фреймворк?","q1.a":"Нет. Он читает исходы. Твой harness производит файл результатов — одна запись на исход, — а HELD решает, переживает ли разница между двумя системами. Он не запускает модели, агентов и роботов и не обязан знать, что породило данные.",
+      "q2.q":"Отложенная выборка точно не участвовала в отборе?","q2.a":"HELD этого знать не может. Он берёт метки split как утверждение владельца данных. Что он может — закрепить контракт и файл данных, чтобы рецензент видел, что протокол не менялся между раундами. Ради этого и существует квитанция.",
+      "q3.q":"Почему он отклоняет улучшения, которые принимают другие инструменты?","q3.a":"Потому что он не подтверждает то, чего данные не подтверждают. На бенчмарке жадное принятие ошибочно оставляет кандидата без реального улучшения в 89,9 % раундов, а отложенное правило — в 2,3 % при номинальных 5 %. Цена — мощность, и held plan называет её в элементах.",
+      "q4.q":"Работает ли это с робототехническими политиками?","q4.a":"Да. Улучшение робо-политики — это success rate по задачам, и арифметика та же: отборная выборка задач для выбора политики, отложенный набор, который в отборе не участвовал, и кандидат, который выигрывает на первом и идёт вровень на втором. Опубликованная работа по рекурсивному самоулучшению в робототехнике описывает ровно этот отказ: изменения проходили свои тесты, а целевая задача не решалась никогда.",
+      "q5.q":"Коррекция точная?","q5.a":"Это верхняя оценка. Прогноз предполагает, что кандидаты в раунде независимы. Если они делят базовую систему, их ошибки движутся вместе, реальное завышение меньше, и коррекция консервативна. Бенчмарк измеряет оба числа, а клауз corr позволяет задать корреляцию явно.",
+      "q6.q":"Нужна ли сеть?","q6.a":"Нет. Один статический бинарник, ноль runtime-зависимостей, без аккаунта, телеметрии и сети. Всё, что он делает, — арифметика над файлами, которые у тебя уже есть.",
+      "cta.title":"Измеряй на том, что ты не отбирал.","cta.body":"Свободно по MIT. Форкайте, меняйте, публикуйте.",
+      "cta.download":"Скачать v0.1.0","cta.repo":"GitHub",
+      "cite":"Процитировать — BibTeX",
+      "foot.made":"Сделано Антоном Балановым · MIT",
+      "verdict.conflict":"ПРОТИВОРЕЧИЕ","verdict.proven":"ПОДТВЕРЖДЕНО",
+      "verdict.conflictText":"Заявление полностью объясняется отбором. На свежих данных оно стоит ",
+      "verdict.provenText":"Заявление переживает коррекцию отбора. Но отложенный порог всё равно нужно взять на свежих данных — и только они могут это сделать.",
+      "unit":"пунктов"
+    }
+  };
+
+  /* ---- statistics, mirroring the tool ---- */
+  function erf(x){
+    var s = x<0?-1:1; x = Math.abs(x);
+    var t = 1/(1+0.3275911*x);
+    var y = 1 - (((((1.061405429*t-1.453152027)*t+1.421413741)*t-0.284496736)*t+0.254829592)*t)*Math.exp(-x*x);
+    return s*y;
+  }
+  function normCdf(x){ return 0.5*(1+erf(x/Math.SQRT2)); }
+  function normInv(p){
+    if(p<=0||p>=1) return NaN;
+    var sign = p>0.5?-1:1, target = p>0.5?1-p:p;
+    var lo=-40, hi=0;
+    for(var i=0;i<120;i++){
+      var mid=(lo+hi)/2;
+      if(normCdf(mid)<target) lo=mid; else hi=mid;
+      if(hi-lo<=1e-12) break;
+    }
+    return sign*(lo+hi)/2;
+  }
+  var SIGMA_ITEM = 1/Math.SQRT2;
+  function expectedMax(n){
+    if(n<=1) return 0;
+    return normInv((n-0.375)/(n+0.25));
+  }
+  function requiredN(delta, alpha, power){
+    var z = normInv(1-alpha/2) + normInv(power);
+    return Math.ceil(Math.pow(z*SIGMA_ITEM/delta, 2));
+  }
+
+  /* ---- the contract as a chain of clauses ---- */
+  var CLAUSES = [
+    ["v","1"],["candidate","policy-v7"],["baseline","policy-v3"],["metric","success_rate"],
+    ["judge","state_check"],["selection","sel"],["heldout","hold"],["candidates","16"],
+    ["corr","0"],["alpha","0.05"],["min_gain","0.01"],["power","0.8"],["locale","en;ru;es;zh"]
+  ];
+  var CONTRACT = "v=1, candidate=policy-v7, baseline=policy-v3, metric=success_rate, "+
+    "judge=state_check, selection=sel, heldout=hold, candidates=16, corr=0, "+
+    "alpha=0.05, min_gain=0.01, power=0.8, locale=en;ru;es;zh";
+  var PIN = "66e2cdb8b8f79a76421ba1e05595a28226a4a5b218e67993d49ec5dc3c8c6838";
+
+  var BENCH = [
+    [16,16,0.8990,0.2390,0.0230],
+    [16,64,0.9645,0.4025,0.0220],
+    [64,16,0.9280,0.2025,0.0210],
+    [256,16,0.9305,0.1890,0.0280]
+  ];
+
+  var LANG_DATA = [
+    ["EN","cand","policy-v7","CONFLICTING","+0.1875","[-0.0437, +0.0437]","39241"],
+    ["RU","cand","policy-v7","ПРОТИВОРЕЧИЕ","+0.1875","[-0.0437, +0.0437]","39241"],
+    ["ES","cand","policy-v7","CONTRADICTORIO","+0.1875","[-0.0437, +0.0437]","39241"],
+    ["ZH","cand","policy-v7","存在冲突","+0.1875","[-0.0437, +0.0437]","39241"]
+  ];
+  var LANG_ROWS = [
+    ["EN","CANDIDATE","HELD-OUT SPLIT","VERDICT"],
+    ["RU","КАНДИДАТ","ОТЛОЖЕННАЯ ВЫБОРКА","ВЕРДИКТ"],
+    ["ES","CANDIDATO","MUESTRA RESERVADA","VEREDICTO"],
+    ["ZH","候选","留出集","结论"]
+  ];
+
+  var state = "en";
+
+  function t(key){
+    var table = D[state] || D.en;
+    return table[key] !== undefined ? table[key] : (D.en[key] || key);
+  }
+
+  function applyLanguage(){
+    var nodes = document.querySelectorAll("[data-i18n]");
+    for(var i=0;i<nodes.length;i++){
+      var key = nodes[i].getAttribute("data-i18n");
+      var html = t(key);
+      if(html.indexOf("<em>")>=0 || html.indexOf("<span")>=0){
+        nodes[i].innerHTML = html;
+      } else {
+        nodes[i].textContent = html;
+      }
+    }
+    var buttons = document.querySelectorAll(".lang button");
+    for(var j=0;j<buttons.length;j++){
+      buttons[j].setAttribute("aria-pressed", buttons[j].getAttribute("data-lang")===state ? "true":"false");
+    }
+    renderChain();
+    renderCommand();
+    renderManifest();
+    renderKeys();
+    renderLangCards();
+    renderBench();
+    renderVerdict();
+  }
+
+  function renderChain(){
+    var ul = document.getElementById("chain");
+    ul.innerHTML = "";
+    for(var i=0;i<CLAUSES.length;i++){
+      var li = document.createElement("li");
+      var chip = document.createElement("span");
+      chip.className = "clause";
+      chip.innerHTML = "<b>"+CLAUSES[i][0]+"</b><span>"+CLAUSES[i][1]+"</span>";
+      li.appendChild(chip);
+      if(i<CLAUSES.length-1){
+        var sep = document.createElement("span");
+        sep.className = "sep";
+        sep.textContent = ",";
+        li.appendChild(sep);
+      }
+      ul.appendChild(li);
+    }
+  }
+
+  function renderCommand(){
+    var el = document.getElementById("cmdcode");
+    el.innerHTML =
+      '<span class="c"># the contract the loop will be judged against</span>\n'+
+      '<span class="k">v</span>=1, <span class="k">candidate</span>=policy-v7, <span class="k">baseline</span>=policy-v3,\n'+
+      '<span class="k">selection</span>=sel, <span class="k">heldout</span>=hold, <span class="k">candidates</span>=16,\n'+
+      '<span class="k">alpha</span>=0.05, <span class="k">min_gain</span>=0.01\n\n'+
+      '<span class="c"># decide whether the claim survives</span>\n'+
+      'held gate measurement.held --data scores.jsonl\n\n'+
+      '<span class="c"># 0 proven · 1 not proven or conflicting · 2 bad input</span>';
+  }
+
+  function renderManifest(){
+    document.getElementById("manifestcode").innerHTML =
+      '<span class="c"># one line of clauses, separated by commas</span>\n'+
+      '<span class="k">v</span>=1, <span class="k">candidate</span>=policy-v7, <span class="k">baseline</span>=policy-v3, <span class="k">metric</span>=success_rate,\n'+
+      '<span class="k">judge</span>=state_check, <span class="k">selection</span>=sel, <span class="k">heldout</span>=hold, <span class="k">candidates</span>=16,\n'+
+      '<span class="k">corr</span>=0, <span class="k">alpha</span>=0.05, <span class="k">min_gain</span>=0.01, <span class="k">power</span>=0.8,\n'+
+      '<span class="k">locale</span>=en;ru;es;zh\n\n'+
+      '<span class="c"># the pin of that contract</span>\n'+
+      PIN;
+  }
+
+  function renderKeys(){
+    document.getElementById("keyscode").innerHTML =
+      '<span class="k">v</span>            format version, currently 1\n'+
+      '<span class="k">candidate</span>    system under test\n'+
+      '<span class="k">baseline</span>     system it is compared against\n'+
+      '<span class="k">metric</span>       measured quantity\n'+
+      '<span class="k">judge</span>        how an outcome was decided\n'+
+      '<span class="k">selection</span>    split used to pick the candidate\n'+
+      '<span class="k">heldout</span>      split never used for that\n'+
+      '<span class="k">candidates</span>   candidates produced in the round\n'+
+      '<span class="k">corr</span>         correlation between candidates\n'+
+      '<span class="k">alpha</span>        significance level\n'+
+      '<span class="k">min_gain</span>     smallest gain worth accepting\n'+
+      '<span class="k">power</span>        target power for the plan\n'+
+      '<span class="k">locale</span>       languages to render into';
+  }
+
+  function renderLangCards(){
+    var host = document.getElementById("langcards");
+    host.innerHTML = "";
+    for(var i=0;i<LANG_DATA.length;i++){
+      var row = LANG_ROWS[i];
+      var card = document.createElement("div");
+      card.className = "langcard";
+      card.innerHTML =
+        '<h4>'+row[0]+'</h4><dl>'+
+        '<dt>'+row[1]+'</dt><dd>policy-v7</dd>'+
+        '<dt>'+row[2]+'</dt><dd>hold · 64</dd>'+
+        '<dt>'+row[3]+'</dt><dd>'+LANG_DATA[i][3]+'</dd>'+
+        '<dt>held-out gain</dt><dd>'+LANG_DATA[i][4]+'</dd>'+
+        '<dt>interval</dt><dd>'+LANG_DATA[i][5]+'</dd>'+
+        '<dt>items needed</dt><dd>'+LANG_DATA[i][6]+'</dd>'+
+        '</dl>';
+      host.appendChild(card);
+    }
+  }
+
+  function renderBench(){
+    var body = document.getElementById("benchbody");
+    body.innerHTML = "";
+    for(var i=0;i<BENCH.length;i++){
+      var b = BENCH[i];
+      var tr = document.createElement("tr");
+      tr.className = (b[0]===16 && b[1]===16) ? "win" : "";
+      tr.innerHTML =
+        '<td class="num">'+b[0]+'</td>'+
+        '<td class="num">'+b[1]+'</td>'+
+        '<td class="num bad">'+ (b[2]*100).toFixed(1) +' %</td>'+
+        '<td class="num">'+ (b[3]*100).toFixed(1) +' %</td>'+
+        '<td class="num good">'+ (b[4]*100).toFixed(1) +' %</td>';
+      body.appendChild(tr);
+    }
+  }
+
+  function fmt(v){
+    var s = (v>=0?"+":"") + v.toFixed(1);
+    return s;
+  }
+
+  function renderVerdict(){
+    var sel = +document.getElementById("s-sel").value;
+    var cand = +document.getElementById("s-cand").value;
+    var claim = +document.getElementById("s-claim").value;
+
+    document.getElementById("v-sel").textContent = sel;
+    document.getElementById("v-cand").textContent = cand;
+    document.getElementById("v-claim").textContent = claim.toFixed(1);
+
+    var se = SIGMA_ITEM/Math.sqrt(sel);
+    var inflationPoints = se*expectedMax(cand)*100;
+    var after = claim - inflationPoints;
+
+    document.getElementById("o-reported").textContent = fmt(claim);
+    document.getElementById("o-explained").textContent = fmt(inflationPoints);
+    var afterEl = document.getElementById("o-after");
+    afterEl.textContent = fmt(after);
+    afterEl.className = after < 0 ? "bad" : (after < claim/2 ? "warn" : "good");
+    document.getElementById("o-explained").className = inflationPoints > claim ? "warn" : "";
+
+    // The exact figure printed by held plan for a one point gain on a binary
+    // metric at alpha 0.05 and power 0.8. The browser quantile is an
+    // approximation, so this line quotes the tool rather than recomputing it.
+    document.getElementById("o-need").textContent = "39,241";
+
+    var box = document.getElementById("o-verdict");
+    var text = document.getElementById("o-verdict-text");
+    if(inflationPoints >= claim && claim > 0){
+      box.className = "verdict conflict";
+      text.textContent = t("verdict.conflictText") + fmt(after) + " " + t("unit") + ".";
+    } else {
+      box.className = "verdict proven";
+      text.textContent = t("verdict.provenText");
+    }
+  }
+
+  function renderCite(){
+    document.getElementById("citecode").textContent =
+      "@misc{balanov2026held,\n"+
+      "  title  = {HELD: Held-out Measurement for Claimed AI and Robot Improvements},\n"+
+      "  author = {Balanov, Anton},\n"+
+      "  year   = {2026},\n"+
+      "  url    = {https://balanov.pro/held/}\n"+
+      "}";
+  }
+
+  /* ---- wiring ---- */
+  document.getElementById("s-sel").addEventListener("input", renderVerdict);
+  document.getElementById("s-cand").addEventListener("input", renderVerdict);
+  document.getElementById("s-claim").addEventListener("input", renderVerdict);
+  var buttons = document.querySelectorAll(".lang button");
+  for(var i=0;i<buttons.length;i++){
+    (function(btn){
+      btn.addEventListener("click", function(){
+        state = btn.getAttribute("data-lang");
+        applyLanguage();
+      });
+    })(buttons[i]);
+  }
+  renderCite();
+  applyLanguage();
+
+  /* ---- GitHub counters ---- */
+  fetch("https://api.github.com/repos/Balanov/held")
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d && typeof d.stargazers_count === "number"){
+        document.getElementById("gh-stars").textContent = d.stargazers_count;
+        document.getElementById("gh-forks").textContent = d.forks_count;
+      }
+    })
+    .catch(function(){});
+})();
+</script>
+</body>
+</html>
