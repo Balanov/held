@@ -5,3 +5,5 @@ dist/
 *.out
 coverage.*
 .DS_Store
+site/_theme.css
+logo-preview.html
