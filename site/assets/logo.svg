@@ -1,6 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="t">
-  <title id="t">HELD</title>
-  <rect x="2" y="2" width="60" height="60" rx="18" fill="#c8ff5a"/>
-  <rect x="27" y="10" width="20" height="20" rx="5" fill="#101713"/>
-  <path d="M31 28C31 38 27 46 19 52" fill="none" stroke="#101713" stroke-width="12" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">HELD</title>
+  <rect x="2" y="2" width="60" height="60" rx="18" fill="#f8381f"/>
+  <circle cx="32" cy="15" r="9.5" fill="#140f10"/>
+  <path d="M32 24C32 34 28 42 20 47" fill="none" stroke="#140f10" stroke-width="10" stroke-linecap="round"/>
+  <path d="M11 54h42" fill="none" stroke="#140f10" stroke-width="6" stroke-linecap="round"/>
+  <path d="M11 46v8M53 46v8" fill="none" stroke="#140f10" stroke-width="6" stroke-linecap="round"/>
 </svg>

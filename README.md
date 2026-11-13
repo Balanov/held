@@ -1,12 +1,25 @@
-# HELD
+<div align="center">
+  <img src="docs/readme/hero.png" alt="HELD — the live measurement console: a claimed gain of +12 points, +31 points of it explained by selection alone, and nothing left over" width="100%">
+  <p><strong>Measure on what you did not select.</strong></p>
+  <p>HELD decides whether a claimed improvement in an AI system or a robot policy is real.</p>
+  <p>
+    <a href="#quick-start">Quick start</a> ·
+    <a href="#the-measurements">Measurements</a> ·
+    <a href="#why">Why</a> ·
+    <a href="https://balanov.pro/held/">Website</a> ·
+    <a href="README_RU.md">Русский</a>
+  </p>
+  <p>
+    <a href="https://github.com/Balanov/held/actions/workflows/ci.yml"><img src="https://github.com/Balanov/held/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT license"></a>
+    <img src="https://img.shields.io/badge/deps-0-blue.svg" alt="No runtime dependencies">
+  </p>
+</div>
 
-> Measure on what you did not select.
-
-HELD decides whether a claimed improvement in an AI system or a robot policy is
-real. It measures the candidate against the baseline on data that was **never
-used to pick the candidate**, corrects the selection-split gain for the
-winner's curse, and tells you how much held-out evidence the claim would need
-in order to be provable.
+HELD measures a candidate against the baseline on data that was **never used to
+pick the candidate**, corrects the selection-split gain for the winner's curse,
+and tells you whether the gain survives — or how much held-out evidence it
+would take.
 
 **One static binary. Zero dependencies. Offline. MIT.**
 
@@ -15,17 +28,22 @@ held gate measurement.held --data scores.jsonl
 ```
 
 ```
-VERDICT                CONFLICTING
-                       the selection split reports +0.1875, but the held-out
-                       lower bound -0.0437 does not clear 0.0100
+VERDICT                        CONFLICTING
+                       the selection split reports +0.1875, but the held-out lower bound -0.0437 does not clear 0.0100
 
-CLAIMED GAIN           +0.1875
-EXPECTED SELECTION INFLATION 0.1783  (16 candidates, expected maximum 1.7688)
+CLAIMED GAIN                   +0.1875
+EXPECTED SELECTION INFLATION   0.1783  (16 CANDIDATES IN ROUND, expected maximum 1.7688)
 GAIN AFTER SELECTION CORRECTION +0.0092
-HELD-OUT GAIN          +0.0000
-HELD-OUT INTERVAL      [-0.0437, +0.0437]
-HELD-OUT ITEMS NEEDED  2492
+HELD-OUT GAIN                  +0.0000
+HELD-OUT INTERVAL              [-0.0437, +0.0437]
+LOWER BOUND                    -0.0437
+HELD-OUT ITEMS NEEDED          2492
+PER-ITEM SPREAD                0.1782  (estimated from the held-out split)
 ```
+
+The loop reported **+18.75 %**. After the selection correction there is
+**+0.92 %** left, and the held-out split shows **0.00 %**. The verdict is
+`conflicting`, and the exit code is `1`.
 
 ## Why
 
