@@ -3,7 +3,7 @@
   <p><strong>Measure on what you did not select.</strong></p>
   <p>HELD decides whether a claimed improvement in an AI system or a robot policy is real.</p>
   <p>
-    <a href="#quick-start">Quick start</a> ·
+    <a href="#use-it">Quick start</a> ·
     <a href="#the-measurements">Measurements</a> ·
     <a href="#why">Why</a> ·
     <a href="#site">Site</a> ·
