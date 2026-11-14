@@ -221,6 +221,13 @@ run from the binary, in the browser.
 }
 ```
 
+## Related projects
+
+- [priemka](https://github.com/Balanov/priemka) — acceptance gates for AI systems before production.
+- [until](https://github.com/Balanov/until) — evidence-gated autonomous product operations.
+- [asbuilt](https://github.com/Balanov/asbuilt) — the as-built truth of a server: hardware truth, rules and measured loss.
+
+
 ## License
 
 MIT. Fork it, change it, ship it. See [LICENSE](LICENSE).
