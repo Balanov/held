@@ -6,7 +6,7 @@
     <a href="#quick-start">Quick start</a> ·
     <a href="#the-measurements">Measurements</a> ·
     <a href="#why">Why</a> ·
-    <a href="https://balanov.pro/held/">Website</a> ·
+    <a href="#site">Site</a> ·
     <a href="README_RU.md">Русский</a>
   </p>
   <p>
@@ -184,6 +184,18 @@ points. `held plan` tells you what would.
 
 Full numbers, the method and the raw JSON are in
 [BENCHMARKS.md](BENCHMARKS.md) and in [`bench/results/`](bench/results/).
+
+## Site
+
+The page is the tool, running: the live console, the manifest grammar, the four
+languages and the benchmark behind them.
+
+**[balanov.pro/held](https://balanov.pro/held/)** — the same measurement you can
+run from the binary, in the browser.
+
+[![The live measurement console: a claimed gain of +12 points, +31 of them explained by selection alone, -19 points left over, and the verdict that the claim is fully explained by selection](docs/readme/console.png)](https://balanov.pro/held/)
+
+[![Measured, not asserted: greedy acceptance is wrong in 89.9 % of rounds, a significance test on the selection set in 23.9 %, the held-out interval in 2.3 %](docs/readme/benchmarks.png)](https://balanov.pro/held/)
 
 ## Boundaries
 
