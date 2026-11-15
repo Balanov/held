@@ -105,6 +105,8 @@ No runtime dependencies, no account, no telemetry, no network access.
 
 ## Use it
 
+For a complete offline example with a conflicting claim, see [the worked example](examples/conflicting/README.md).
+
 Write a contract. It is one line of clauses separated by commas:
 
 ```sh
