@@ -1,3 +1,8 @@
+## 0.1.1 - 2026-11-15
+
+### Fixed
+
+- A score record without a score, with a null score, or with an unknown key is refused, and the error names the line or the record index. An explicit zero is still a measured zero.
 # Changelog
 
 ## 0.1.0 — 14 November 2026
