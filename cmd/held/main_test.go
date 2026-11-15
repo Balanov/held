@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -193,5 +194,19 @@ func TestGateWithoutData(t *testing.T) {
 	_, _, code := run(t, "gate", contract)
 	if code != 2 {
 		t.Errorf("exit code = %d, want 2", code)
+	}
+}
+
+func TestCheckedInConflictingExample(t *testing.T) {
+	out, stderr, code := run(t, "gate", "../../examples/conflicting/measurement.held", "--data", "../../examples/conflicting/scores.jsonl", "--json")
+	if code != 1 {
+		t.Fatalf("exit %d, stderr %s, stdout %s", code, stderr, out)
+	}
+	var result struct{ Verdict string }
+	if err := json.Unmarshal([]byte(out), &result); err != nil {
+		t.Fatal(err)
+	}
+	if result.Verdict != "conflicting" {
+		t.Errorf("verdict = %q", result.Verdict)
 	}
 }

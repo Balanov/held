@@ -38,6 +38,8 @@ held gate measurement.held --data scores.jsonl
 а отложенная выборка показывает **0,00 %**. Вердикт — `conflicting`, код
 выхода — `1`.
 
+[Offline worked example: conflicting claim](examples/conflicting/README.md).
+
 ## Зачем
 
 Петля самоулучшения предлагает кандидатов, оставляет того, кто набрал больше
