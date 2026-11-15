@@ -35,7 +35,7 @@ import (
 )
 
 // Version is the release version of the tool.
-const Version = "0.1.0"
+const Version = "0.1.1"
 
 func main() {
 	if len(os.Args) < 2 {
