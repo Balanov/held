@@ -140,11 +140,15 @@ func LoadFrom(r io.Reader) (*Dataset, error) {
 	}
 	d := NewDataset()
 	if trimmed[0] == '[' {
-		var records []Record
+		var records []json.RawMessage
 		if err := json.Unmarshal([]byte(trimmed), &records); err != nil {
 			return nil, fmt.Errorf("invalid JSON array: %w", err)
 		}
-		for i, rec := range records {
+		for i, raw := range records {
+			rec, err := decodeRecord(raw)
+			if err != nil {
+				return nil, fmt.Errorf("record %d: %w", i+1, err)
+			}
 			if err := d.Add(rec); err != nil {
 				return nil, fmt.Errorf("record %d: %w", i, err)
 			}
@@ -158,8 +162,8 @@ func LoadFrom(r io.Reader) (*Dataset, error) {
 		if l == "" {
 			continue
 		}
-		var rec Record
-		if err := json.Unmarshal([]byte(l), &rec); err != nil {
+		rec, err := decodeRecord([]byte(l))
+		if err != nil {
 			return nil, fmt.Errorf("line %d: invalid JSON: %w", line, err)
 		}
 		if err := d.Add(rec); err != nil {
@@ -167,4 +171,26 @@ func LoadFrom(r io.Reader) (*Dataset, error) {
 		}
 	}
 	return d, nil
+}
+
+// decodeRecord distinguishes an explicitly measured zero from a missing score.
+func decodeRecord(raw []byte) (Record, error) {
+	var wire struct {
+		Split  string   `json:"split"`
+		System string   `json:"system"`
+		Item   string   `json:"item"`
+		Score  *float64 `json:"score"`
+	}
+	decoder := json.NewDecoder(strings.NewReader(string(raw)))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&wire); err != nil {
+		return Record{}, err
+	}
+	if err := decoder.Decode(new(any)); err != io.EOF {
+		return Record{}, fmt.Errorf("expected one score record")
+	}
+	if wire.Score == nil {
+		return Record{}, fmt.Errorf("record has no score")
+	}
+	return Record{Split: wire.Split, System: wire.System, Item: wire.Item, Score: *wire.Score}, nil
 }
