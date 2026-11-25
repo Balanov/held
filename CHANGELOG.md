@@ -1,3 +1,10 @@
+## [0.1.2] — 2026-11-25
+
+### Fixed
+
+- A synthetic worked example that produces the CONFLICTING verdict is in `examples/conflicting`, with its contract, its scores and the expected exit status. A test reads the checked-in files back and asserts the verdict.
+
+
 ## 0.1.1 - 2026-11-15
 
 ### Fixed
