@@ -230,6 +230,11 @@ run from the binary, in the browser.
 - [asbuilt](https://github.com/Balanov/asbuilt) — the as-built truth of a server: hardware truth, rules and measured loss.
 
 
+## Related
+
+- [pact](https://github.com/Balanov/pact) — a tiny contract for agent-initiated payments: quote, consent, commit, receipt, chained by digests.
+- [attest](https://github.com/Balanov/attest) — offline verifier for PACT trails: one static Go binary, standard library only.
+
 ## License
 
 MIT. Fork it, change it, ship it. See [LICENSE](LICENSE).
